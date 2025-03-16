@@ -1,7 +1,7 @@
 ## PREREQUISITES
 - AWS Account
 - MongoDB Account
--Discord Developer Account (to create the bot and get tokens)
+- Discord Developer Account (to create the bot and get tokens)
 - Domain name for the verification website (if using a custom domain)
 
 ### CREATE A DISCORD BOT
