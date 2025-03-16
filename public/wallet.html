@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>connect your wallet - MONAD TEST NET ASSET VERIFICATION</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #ffffff;
+      color: #000000;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+    }
+    .container {
+      max-width: 800px;
+      margin-top: 50px;
+    }
+    .verification-card {
+      background-color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      box-shadow: none;
+    }
+    .card-header {
+      background-color: #ffffff;
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+      color: #000000;
+    }
+    .wallet-btn {
+      background-color: #ffffff !important;
+      border: 1px solid #000000 !important;
+      padding: 12px 24px;
+      font-size: 12px;
+      font-family: 'Courier New', monospace;
+      color: #000000 !important;
+      text-transform: lowercase;
+    }
+    .wallet-btn:hover, .wallet-btn:active, .wallet-btn:focus, 
+    .wallet-btn.btn-primary:hover, .wallet-btn.btn-primary:active, .wallet-btn.btn-primary:focus,
+    .btn-primary.wallet-btn:hover, .btn-primary.wallet-btn:active, .btn-primary.wallet-btn:focus {
+      background-color: #ffffff !important;
+      color: #000000 !important;
+      border: 1px solid #000000 !important;
+      box-shadow: none !important;
+    }
+    .wallet-address {
+      background-color: #ffffff;
+      padding: 10px;
+      border-radius: 5px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      word-break: break-all;
+      color: #000000;
+      border: none;
+    }
+    .token-list {
+      margin: 20px 0;
+      padding: 15px;
+      background-color: #ffffff;
+      border-radius: 5px;
+      border: none;
+    }
+    .status-verified {
+      color: #000000;
+      font-weight: bold;
+    }
+    .status-unverified {
+      color: #000000;
+      font-weight: bold;
+    }
+    .logout-link {
+      color: #000000;
+      text-decoration: none;
+      font-size: 12px;
+    }
+    .logout-link:hover {
+      color: #333333;
+    }
+    .btn {
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      text-transform: lowercase;
+    }
+    .btn-success {
+      background-color: #ffffff;
+      border: 1px solid #000000;
+      color: #000000;
+    }
+    .btn-success:hover, .btn-success:active, .btn-success:focus {
+      background-color: #ffffff !important;
+      border: 1px solid #000000;
+      color: #000000;
+      box-shadow: none !important;
+    }
+    .btn-outline-secondary {
+      color: #000000;
+      border: 1px solid #000000;
+      background-color: #ffffff;
+    }
+    .btn-outline-secondary:hover, .btn-outline-secondary:active, .btn-outline-secondary:focus {
+      background-color: #ffffff !important;
+      border: 1px solid #000000;
+      color: #000000;
+      box-shadow: none !important;
+    }
+    .alert {
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      border: none;
+      text-align: center;
+      padding: 0;
+      margin: 0;
+    }
+    .alert-success {
+      background-color: #ffffff;
+      color: #000000;
+      border: none;
+    }
+    .alert-danger {
+      background-color: #ffffff;
+      color: #000000;
+      border: none;
+    }
+    h1, h4, h5, h6, p, .lead {
+      font-family: 'Courier New', monospace;
+      color: #000000;
+    }
+    h1 {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .lead {
+      font-size: 12px;
+    }
+    .card-footer {
+      background-color: #ffffff;
+      border-top: none;
+    }
+    .btn-primary {
+      background-color: #ffffff;
+      border: 1px solid #000000;
+      color: #000000;
+    }
+    .btn-primary:hover, .btn-primary:active, .btn-primary:focus {
+      background-color: #ffffff !important;
+      border: 1px solid #000000;
+      color: #000000;
+      box-shadow: none !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card verification-card mt-5">
+      <div class="card-header text-center">
+        <h1>CONNECT YOUR WALLET</h1>
+      </div>
+      <div class="card-body">
+        <div id="wallet-info">
+          <p class="lead text-center">connect your wallet to verify token ownership on monad test net.</p>
+          
+          <div id="wallet-not-connected">
+            <div class="d-grid gap-2 col-8 mx-auto mt-4">
+              <button id="connect-wallet-btn" class="btn btn-primary btn-lg wallet-btn">
+                connect wallet
+              </button>
+            </div>
+          </div>
+          
+          <div id="wallet-connected" style="display: none;">
+            <p class="text-center">connected wallet:</p>
+            <div class="wallet-address text-center" id="connected-address">0x0000000000000000000000000000000000000000</div>
+            
+            <div class="token-list">
+              <div id="token-status"></div>
+            </div>
+            
+            <div class="d-grid gap-2 col-6 mx-auto mt-4">
+              <button id="verify-btn" class="btn btn-success" style="display: none;">complete verification</button>
+              <button id="disconnect-btn" class="btn btn-outline-secondary">disconnect wallet</button>
+            </div>
+          </div>
+        </div>
+        
+        <div id="verification-result" style="display: none;">
+          <!-- This will be populated based on verification result -->
+        </div>
+      </div>
+      <div class="card-footer text-center">
+        <a href="/logout" class="btn btn-outline-secondary btn-sm">logout</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Web3 and supporting libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.8.0/dist/web3.min.js"></script>
+  <script src="https://unpkg.com/web3modal@1.9.12/dist/index.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+  
+  <!-- Configuration (will be replaced by server) -->
+  <script>
+    window.APP_CONFIG = {
+      contracts: [],
+      chainId: 1,
+      rpcUrl: "",
+      discordId: "",
+      explorerUrl: ""
+    };
+  </script>
+  
+  <!-- Custom JavaScript -->
+  <script>
+    // Contract information
+    const contracts = window.APP_CONFIG.contracts;
+    const chainId = window.APP_CONFIG.chainId;
+    const rpcUrl = window.APP_CONFIG.rpcUrl;
+    const discordId = window.APP_CONFIG.discordId;
+    const explorerUrl = window.APP_CONFIG.explorerUrl;
+    
+    // ERC-1155 ABI - Only the functions we need
+    const erc1155Abi = [
+      {
+        "constant": true,
+        "inputs": [
+          { "name": "account", "type": "address" },
+          { "name": "id", "type": "uint256" }
+        ],
+        "name": "balanceOf",
+        "outputs": [{ "name": "", "type": "uint256" }],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      }
+    ];
+    
+    // DOM elements
+    const connectWalletBtn = document.getElementById('connect-wallet-btn');
+    const connectedAddressEl = document.getElementById('connected-address');
+    const walletNotConnected = document.getElementById('wallet-not-connected');
+    const walletConnected = document.getElementById('wallet-connected');
+    const tokenStatus = document.getElementById('token-status');
+    const verifyBtn = document.getElementById('verify-btn');
+    const disconnectBtn = document.getElementById('disconnect-btn');
+    const verificationResult = document.getElementById('verification-result');
+    const walletInfo = document.getElementById('wallet-info');
+    
+    // Web3Modal instance
+    let web3Modal;
+    let provider;
+    let web3;
+    let connectedAddress = '';
+    let ownedTokensByContract = [];
+
+    // Initialize Web3Modal
+    async function init() {
+      console.log('Initializing Web3Modal...');
+      console.log('APP_CONFIG:', window.APP_CONFIG);
+      
+      const providerOptions = {
+        "custom-haha": {
+          display: {
+            logo: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIHJ4PSIyMCIgZmlsbD0iIzg4NjVGRiIvPgogIDx0ZXh0IHg9IjUwIiB5PSI2NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjUwIiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkg8L3RleHQ+Cjwvc3ZnPg==",
+            name: "haha",
+            description: "connect with haha wallet"
+          },
+          package: true,
+          connector: async () => {
+            if (typeof window.haha === 'undefined') {
+              window.open('https://www.haha.me/', '_blank');
+              throw new Error('Please install Haha wallet');
+            }
+
+            try {
+              const provider = window.haha;
+              await provider.request({ method: 'eth_requestAccounts' });
+              
+              try {
+                await provider.request({
+                  method: 'wallet_switchEthereumChain',
+                  params: [{ chainId: `0x${window.APP_CONFIG.chainId.toString(16)}` }]
+                });
+              } catch (switchError) {
+                if (switchError.code === 4902) {
+                  await provider.request({
+                    method: 'wallet_addEthereumChain',
+                    params: [{
+                      chainId: `0x${window.APP_CONFIG.chainId.toString(16)}`,
+                      chainName: 'Monad Testnet',
+                      nativeCurrency: {
+                        name: 'MON',
+                        symbol: 'MON',
+                        decimals: 18
+                      },
+                      rpcUrls: [window.APP_CONFIG.rpcUrl],
+                      blockExplorerUrls: [window.APP_CONFIG.explorerUrl]
+                    }]
+                  });
+                } else {
+                  throw switchError;
+                }
+              }
+              
+              return provider;
+            } catch (error) {
+              console.error('Failed to connect to Haha wallet:', error);
+              throw error;
+            }
+          }
+        },
+        "custom-phantom": {
+          display: {
+            logo: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIHJ4PSIyMCIgZmlsbD0iIzUzNTVERCIvPgogIDx0ZXh0IHg9IjUwIiB5PSI2NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjUwIiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlA8L3RleHQ+Cjwvc3ZnPg==",
+            name: "phantom",
+            description: "connect with phantom wallet"
+          },
+          package: true,
+          connector: async () => {
+            if (typeof window.phantom === 'undefined') {
+              window.open('https://phantom.app/', '_blank');
+              throw new Error('Please install Phantom wallet');
+            }
+
+            try {
+              const provider = window.phantom?.ethereum;
+              if (!provider) throw new Error('Phantom wallet not found');
+              
+              await provider.request({ method: 'eth_requestAccounts' });
+              
+              try {
+                await provider.request({
+                  method: 'wallet_switchEthereumChain',
+                  params: [{ chainId: `0x${window.APP_CONFIG.chainId.toString(16)}` }]
+                });
+              } catch (switchError) {
+                if (switchError.code === 4902) {
+                  await provider.request({
+                    method: 'wallet_addEthereumChain',
+                    params: [{
+                      chainId: `0x${window.APP_CONFIG.chainId.toString(16)}`,
+                      chainName: 'Monad Testnet',
+                      nativeCurrency: {
+                        name: 'MON',
+                        symbol: 'MON',
+                        decimals: 18
+                      },
+                      rpcUrls: [window.APP_CONFIG.rpcUrl],
+                      blockExplorerUrls: [window.APP_CONFIG.explorerUrl]
+                    }]
+                  });
+                } else {
+                  throw switchError;
+                }
+              }
+              
+              return provider;
+            } catch (error) {
+              console.error('Failed to connect to Phantom wallet:', error);
+              throw error;
+            }
+          }
+        }
+      };
+
+      try {
+        web3Modal = new window.Web3Modal.default({
+          cacheProvider: false,
+          providerOptions,
+          disableInjectedProvider: false,
+          theme: "dark",
+          providerOptions: {
+            injected: {
+              display: {
+                logo: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIHJ4PSIyMCIgZmlsbD0iI0Y2ODUxQiIvPgogIDx0ZXh0IHg9IjUwIiB5PSI2NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjUwIiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk08L3RleHQ+Cjwvc3ZnPg==",
+                name: "metamask",
+                description: "connect with metamask"
+              },
+              package: true
+            },
+            ...providerOptions
+          }
+        });
+        
+        console.log('Web3Modal initialized with providers:', Object.keys(providerOptions));
+        
+        // Add event listeners
+        connectWalletBtn.onclick = connectWallet;
+        verifyBtn.onclick = completeVerification;
+        disconnectBtn.onclick = disconnectWallet;
+        
+      } catch (error) {
+        console.error('Failed to initialize Web3Modal:', error);
+        verificationResult.style.display = 'block';
+        verificationResult.innerHTML = `
+          <div class="alert alert-danger text-center">
+            <h4>connection failed</h4>
+            <p>${error.message || 'could not connect to wallet. please try again.'}</p>
+            <button onclick="location.reload()" class="btn btn-primary mt-3">try again</button>
+          </div>
+        `;
+      }
+    }
+    
+    // Connect wallet using Web3Modal
+    async function connectWallet() {
+      console.log('Attempting to connect wallet...');
+      
+      try {
+        connectWalletBtn.disabled = true;
+        connectWalletBtn.textContent = 'connecting...';
+        
+        // Ensure web3Modal is initialized
+        if (!web3Modal) {
+          throw new Error('Web3Modal not initialized');
+        }
+        
+        provider = await web3Modal.connect();
+        console.log('Provider connected:', provider);
+        
+        web3 = new Web3(provider);
+        console.log('Web3 initialized');
+        
+        const accounts = await web3.eth.getAccounts();
+        console.log('Got accounts:', accounts);
+        
+        if (!accounts || accounts.length === 0) {
+          throw new Error('No accounts found. Please make sure your wallet is unlocked.');
+        }
+        
+        connectedAddress = accounts[0];
+        
+        // Check if user is on the correct network
+        const chainIdHex = await web3.eth.getChainId();
+        if (chainIdHex !== window.APP_CONFIG.chainId) {
+          try {
+            await provider.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: `0x${window.APP_CONFIG.chainId.toString(16)}` }]
+            });
+          } catch (switchError) {
+            if (switchError.code === 4902) {
+              try {
+                await provider.request({
+                  method: 'wallet_addEthereumChain',
+                  params: [{
+                    chainId: `0x${window.APP_CONFIG.chainId.toString(16)}`,
+                    chainName: 'Monad Testnet',
+                    nativeCurrency: {
+                      name: 'MON',
+                      symbol: 'MON',
+                      decimals: 18
+                    },
+                    rpcUrls: [window.APP_CONFIG.rpcUrl],
+                    blockExplorerUrls: [window.APP_CONFIG.explorerUrl]
+                  }]
+                });
+              } catch (addError) {
+                console.error('Failed to add network', addError);
+                throw new Error('Please switch to Monad Testnet in your wallet');
+              }
+            } else {
+              console.error('Failed to switch network', switchError);
+              throw new Error('Please switch to Monad Testnet in your wallet');
+            }
+          }
+        }
+        
+        // Update UI
+        connectedAddressEl.textContent = connectedAddress;
+        walletNotConnected.style.display = 'none';
+        walletConnected.style.display = 'block';
+        
+        // Check token ownership
+        await checkTokenOwnership();
+        
+        // Setup event listeners for account changes
+        provider.on('accountsChanged', async (accounts) => {
+          connectedAddress = accounts[0];
+          connectedAddressEl.textContent = connectedAddress;
+          await checkTokenOwnership();
+        });
+        
+        provider.on('chainChanged', () => {
+          window.location.reload();
+        });
+
+        provider.on('disconnect', () => {
+          disconnectWallet();
+        });
+      } catch (error) {
+        console.error('Could not connect to wallet', error);
+        verificationResult.style.display = 'block';
+        verificationResult.innerHTML = `
+          <div class="alert alert-danger text-center">
+            <h4>connection failed</h4>
+            <p>${error.message || 'could not connect to wallet. please try again.'}</p>
+            <button onclick="location.reload()" class="btn btn-primary mt-3">try again</button>
+          </div>
+        `;
+      } finally {
+        connectWalletBtn.disabled = false;
+        connectWalletBtn.textContent = 'connect wallet';
+      }
+    }
+    
+    // Helper function to add delay
+    function delay(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    // Helper function to handle rate limits with exponential backoff
+    async function callWithRetry(func, retryCount = 0) {
+      const maxRetries = 5;
+      try {
+        return await func();
+      } catch (error) {
+        console.log(`Call failed (attempt ${retryCount + 1}):`, error);
+        
+        // Check if it's a rate limit error
+        const isRateLimit = error.message?.includes('requests limited') || 
+                          error.info?.error?.code === -32011 ||
+                          error.info?.error?.message?.includes('requests limited');
+                          
+        if (isRateLimit && retryCount < maxRetries) {
+          const waitTime = Math.min(Math.pow(2, retryCount) * 2000, 10000); // Between 2-10 seconds
+          console.log(`Rate limited, waiting ${waitTime}ms before retry...`);
+          await delay(waitTime);
+          return callWithRetry(func, retryCount + 1);
+        }
+        
+        throw error;
+      }
+    }
+
+    // Check token ownership
+    async function checkTokenOwnership() {
+      tokenStatus.innerHTML = '<p class="text-center">checking assets...</p>';
+      ownedTokensByContract = [];
+      
+      try {
+        if (!contracts || contracts.length === 0) {
+          throw new Error('no contracts configured for verification');
+        }
+
+        // Create ethers provider
+        const provider = new ethers.providers.Web3Provider(web3.currentProvider);
+        const signer = provider.getSigner();
+        let foundTokens = false;
+
+        // Define the contract addresses we want to check
+        const targetContracts = [
+          '0x79a0da403a091b41e9bf323a9f621050cc38efa4',
+          '0x7350558fff30b6d4404b03d223614afe116c12a7'
+        ];
+
+        async function checkContract(contractAddress) {
+          console.log(`Checking contract ${contractAddress}...`);
+          
+          try {
+            // Create ethers contract instance with minimal ABI
+            const contractAbi = ["function balanceOf(address,uint256) view returns (uint256)"];
+            const tokenContract = new ethers.Contract(contractAddress, contractAbi, signer);
+            
+            // Check only token ID 0
+            const balance = await callWithRetry(async () => {
+              return tokenContract.balanceOf(connectedAddress, 0);
+            });
+
+            if (balance.gt(0)) {
+              console.log(`Found token 0 in contract ${contractAddress}`);
+              ownedTokensByContract.push({
+                contractAddress: contractAddress,
+                tokenIds: ['0']
+              });
+              return true;
+            }
+            return false;
+          } catch (error) {
+            console.error(`Error checking contract ${contractAddress}:`, error);
+            return false;
+          }
+        }
+
+        // Check each contract
+        for (const contractAddress of targetContracts) {
+          const hasTokens = await checkContract(contractAddress);
+          if (hasTokens) {
+            foundTokens = true;
+            break;
+          }
+          // Add delay between contract checks
+          await delay(2000);
+        }
+
+        // Update UI based on results
+        if (foundTokens) {
+          tokenStatus.innerHTML = '<div class="alert alert-success">you own the required assets. click "complete verification" to continue.</div>';
+          verifyBtn.style.display = 'block';
+          verifyBtn.disabled = false;
+        } else {
+          tokenStatus.innerHTML = '<div class="alert alert-danger">you don\'t own any tokens from either contract. please mint or acquire a token to verify.</div>';
+          verifyBtn.style.display = 'none';
+          verifyBtn.disabled = true;
+        }
+      } catch (error) {
+        console.error('Error checking token ownership:', error);
+        tokenStatus.innerHTML = `<div class="alert alert-danger">${error.message || 'Error checking token ownership. Please try again.'}</div>`;
+        verifyBtn.style.display = 'none';
+        verifyBtn.disabled = true;
+      }
+    }
+    
+    // Complete verification
+    async function completeVerification() {
+      try {
+        // Disable verify button during verification
+        verifyBtn.disabled = true;
+        verifyBtn.textContent = 'verifying...';
+
+        // Sign a message to prove wallet ownership
+        const message = `Verify Discord (${discordId}) with wallet ${connectedAddress}`;
+        
+        try {
+          const signature = await web3.eth.personal.sign(message, connectedAddress);
+          
+          // Send verification to server
+          const response = await fetch('/verify-wallet', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              walletAddress: connectedAddress,
+              ownedTokensByContract,
+              signature,
+              message
+            })
+          });
+
+          let result;
+          try {
+            result = await response.json();
+          } catch (e) {
+            throw new Error('Invalid response from server');
+          }
+
+          if (!response.ok) {
+            throw new Error(result.message || 'Verification failed');
+          }
+
+          if (result.success) {
+            walletInfo.style.display = 'none';
+            verificationResult.style.display = 'block';
+            verificationResult.innerHTML = `
+              <div class="alert alert-success text-center">
+                <h1>verification successful!</h1>
+                <p>verification successful! role has been added.</p>
+                <a href="https://discord.com/channels/${result.guildId}" class="btn btn-primary mt-3">return to discord</a>
+              </div>
+            `;
+          } else {
+            throw new Error(result.message || 'verification failed');
+          }
+        } catch (error) {
+          if (error.code === 4001) {
+            throw new Error('you rejected the signature request. please try again and approve the signature.');
+          }
+          throw error;
+        }
+      } catch (error) {
+        console.error('Verification error:', error);
+        verificationResult.style.display = 'block';
+        verificationResult.innerHTML = `
+          <div class="alert alert-danger text-center">
+            <h4>verification failed</h4>
+            <p>${error.message || 'an error occurred during verification. please try again.'}</p>
+            <div class="mt-3">
+              <button onclick="location.reload()" class="btn btn-primary">try again</button>
+              <button onclick="disconnectWallet()" class="btn btn-outline-secondary ms-2">disconnect wallet</button>
+            </div>
+          </div>
+        `;
+      } finally {
+        // Re-enable verify button
+        verifyBtn.disabled = false;
+        verifyBtn.textContent = 'complete verification';
+      }
+    }
+    
+    // Disconnect wallet
+    function disconnectWallet() {
+      if (provider.close) {
+        provider.close();
+      }
+      web3Modal.clearCachedProvider();
+      provider = null;
+      web3 = null;
+      connectedAddress = '';
+      ownedTokensByContract = [];
+      
+      connectedAddressEl.textContent = '0x0000000000000000000000000000000000000000';
+      walletNotConnected.style.display = 'block';
+      walletConnected.style.display = 'none';
+      tokenStatus.innerHTML = '';
+    }
+    
+    // Initialize when page loads
+    window.addEventListener('load', init);
+  </script>
+</body>
+</html>

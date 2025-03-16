@@ -1,0 +1,100 @@
+body {
+    background-color: #ffffff;
+    color: #ffffff;
+    font-family: 'Courier New', monospace;
+  }
+  
+  .verification-card {
+    background-color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .card-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #40444b;
+  }
+  
+  .card-header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #ffffff;
+  }
+  
+  .card-body {
+    padding: 2rem;
+  }
+  
+  .card-footer {
+    background-color: #202225;
+    border-top: 1px solid #40444b;
+    color: #b9bbbe;
+  }
+  
+  .discord-btn {
+    background-color: #5865F2;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem;
+    transition: background-color 0.2s;
+  }
+  
+  .discord-btn:hover {
+    background-color: #ffffff;
+  }
+  
+  .discord-logo {
+    height: 24px;
+    width: auto;
+  }
+  
+  .wallet-btn {
+    background-color: #ffffff;
+    border: 1px solid #161616;
+    transition: background-color 0.2s;
+  }
+  
+  .wallet-btn:hover {
+    background-color: #ffffff;
+  }
+  
+  .wallet-address {
+    background-color: #ffffff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    word-break: break-all;
+    font-family: 'Courier New', monospace;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+  
+  .token-list {
+    background-color: #ffffff;
+    border-radius: 5px;
+    padding: 15px;
+    margin-top: 20px;
+  }
+  
+  .status-verified {
+    color: #43b581;
+    font-weight: bold;
+  }
+  
+  .status-unverified {
+    color: #f04747;
+    font-weight: bold;
+  }
+  
+  .logout-link {
+    color: #000000;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  
+  .logout-link:hover {
+    color: #ffffff;
+    text-decoration: underline;
+  }
