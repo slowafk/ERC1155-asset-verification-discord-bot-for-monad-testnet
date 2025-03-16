@@ -92,47 +92,40 @@ cd ~/discord-nft-bot
 ### CREATE AND EDIT FILES WITH NANO
 
 #### CREATE INDEX.JS
-```nano index.js
-```
+```nano index.js```
 - Paste the complete index.js code
 - To paste in PuTTY: Right-click in the terminal window (or press Shift+Insert)
 - Update <YOUR_CONTRACT_HERE> on lines 293 and 371 with your contract address
 - Save and exit with: Ctrl+X, then Y, then Enter
 
 #### CREATE PACKAGE.JSON FILE
-```nano package.json
-```
+```nano package.json```
 - Paste the complete package.json code
 - Save and exit: Ctrl+X, Y, Enter
 
 #### CREATE PACKAGE-LOCK.JSON FILE
-```nano package-lock.json
-```
+```nano package-lock.json```
 - Paste the complete package-lock.json code
 - Save and exit: Ctrl+X, Y, Enter
 
 #### CREATE .ENV FILE
-```nano .env
-```
+```nano .env```
 - Paste .env contents with tokens, logins, etc. added
 - Save and exit: Ctrl+X, Y, Enter
 
 #### CREATE INDEX.HTML FILE
-```nano public/index.html
-```
+```nano public/index.html```
 - Paste the complete index.html code
 - 
 - Save and exit: Ctrl+X, Y, Enter
 
 #### CREATE WALLET.HTML FILE
-```nano public/wallet.html
-```
+```nano public/wallet.html```
 - Paste the complete wallet.html code
 - Save and exit: Ctrl+X, Y, Enter
 
 #### CREATE STYLES.CSS FILE
-```nano public/styles.css
-```
+```nano public/styles.css```
 - Paste the complete styles.cs code
 - Save and exit: Ctrl+X, Y, Enter
 
