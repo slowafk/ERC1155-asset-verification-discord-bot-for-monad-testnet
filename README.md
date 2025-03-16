@@ -116,7 +116,7 @@ cd ~/discord-nft-bot
 #### CREATE INDEX.HTML FILE
 ```nano public/index.html```
 - Paste the complete index.html code
-- 
+- Update <YOUR_CONTRACT_ADDRESS> on lines 293 and 371
 - Save and exit: Ctrl+X, Y, Enter
 
 #### CREATE WALLET.HTML FILE
