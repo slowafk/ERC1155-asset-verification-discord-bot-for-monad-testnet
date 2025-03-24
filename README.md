@@ -73,7 +73,7 @@
 - Get your connection string from "Connect" > "Connect your application"
 - Add this connection string to your .env file
 
-### SET UP ENVIROMENT ON EC2
+### SET UP ENVIRONMENT ON EC2
 ``` # Update system packages
 sudo yum update -y
 
